@@ -1,0 +1,25 @@
+node_modules/
+zip-build/
+greengrass-build/
+*.img
+*.pyc
+.bash_history
+.vscode/
+dist/
+.webpack
+.webpackCache
+coverage/
+.dynamodb
+.env.additional
+
+package-lock.json
+
+*.code-workspace
+
+# drawio backup
+*.bkp
+*.dtmp
+
+cdk.context.json
+
+*.private.json
