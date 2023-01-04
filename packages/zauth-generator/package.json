@@ -1,0 +1,21 @@
+{
+  "name": "qr-reader-monitor",
+  "version": "1.0.0",
+  "main": "App.js",
+  "scripts": {
+    "build": "ts-node ./src/main.ts",
+    "start": "ts-node ./src/main.ts",
+    "watch": "tsc -w",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "dante(jwkim@zigbang.com)",
+  "license": "MIT",
+  "dependencies": {
+    "crypto-js": "^4.1.1",
+    "uuid": "^8.3.0",
+    "url": "^0.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.5"
+  }
+}
