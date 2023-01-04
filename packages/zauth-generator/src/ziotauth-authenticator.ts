@@ -66,15 +66,7 @@ export class ZIoTAuthenticator {
    *    duration: Available duration as token (seconds). The default value is 30 secs.
    */
   public generateKeyUri(label: string, secret: ZSecretKey, options?: ZAuthOptions): string {
-    const duration =
-      options != undefined && options.duration != undefined
-        ? options.duration
-        : ZAuthOptionsDefaultValue.DEFAULT_DURATION
-    const alg: any =
-      options != undefined && options.algorithm != undefined
-        ? options.algorithm
-        : ZAuthOptionsDefaultValue.DEFAULT_ALGORITHM
-
+    const [duration, alg] = this.checkOptions(options)
     const mac = this.generateHMAC(label + this.getTimeSlice(duration), secret, alg)
     let auth = `ziotauth://1.1/${label}?secret=${mac}`
     if (options == undefined) return auth
@@ -88,6 +80,14 @@ export class ZIoTAuthenticator {
    * Verify the token
    */
   public verify(token: string, label: string, secret: ZSecretKey, options?: ZAuthOptions): boolean {
+    const [duration, alg] = this.checkOptions(options)
+    return token == this.generateHMAC(label + this.getTimeSlice(duration), secret, alg)
+  }
+
+  /**
+   * Utils
+   */
+  private checkOptions(options: ZAuthOptions) {
     const duration =
       options != undefined && options.duration != undefined
         ? options.duration
@@ -97,12 +97,9 @@ export class ZIoTAuthenticator {
         ? options.algorithm
         : ZAuthOptionsDefaultValue.DEFAULT_ALGORITHM
 
-    return token == this.generateHMAC(label + this.getTimeSlice(duration), secret, alg)
+    return [duration, alg] as const
   }
 
-  /**
-   * Utils
-   */
   private getTimeSlice(duration: number): string {
     const epoch = Math.round(new Date().getTime() / 1000.0)
     return this.leftpad(this.dec2hex(Math.floor(epoch / duration)), 16, '0')
