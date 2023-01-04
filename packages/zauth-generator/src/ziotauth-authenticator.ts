@@ -47,7 +47,7 @@ export class ZIoTAuthenticator {
   }
 
   /**
-   * Generates a MAC based SHA1
+   * Generates a MAC
    */
   public generateHMAC(message: string, secret: ZSecretKey, algorithm: ZHashAlgorithms): string {
     return algorithm == ZHashAlgorithms.HMACSHA1
@@ -56,7 +56,7 @@ export class ZIoTAuthenticator {
   }
 
   /**
-   * Generates the auth-uri based Zigbang IoT Platform Auth Protocol
+   * Generates the auth-uri
    * @param label It used to identify which account a key is associated with.
    *    format: domain:email
    *    example: soma-lounge:jwkim@zigbang.com
