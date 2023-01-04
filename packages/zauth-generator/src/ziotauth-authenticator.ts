@@ -67,13 +67,16 @@ export class ZIoTAuthenticator {
    */
   public generateKeyUri(label: string, secret: ZSecretKey, options?: ZAuthOptions): string {
     const [duration, alg] = this.checkOptions(options)
+    const [issuer, account] = this.checkLabel(label)
+
     const mac = this.generateHMAC(label + this.getTimeSlice(duration), secret, alg)
     let auth = `ziotauth://1.1/${label}?secret=${mac}`
-    if (options == undefined) return auth
-
-    if (options.algorithm != undefined) auth += `&algorithm=${alg}`
-    if (options.duration != undefined) auth += `&duration=${duration}`
-    return auth
+    if (issuer != undefined) auth += `&issuer=${issuer}`
+    if (options != undefined) {
+      if (options.algorithm != undefined) auth += `&algorithm=${alg}`
+      if (options.duration != undefined) auth += `&duration=${duration}`
+    }
+    return encodeURI(auth)
   }
 
   /**
@@ -87,6 +90,11 @@ export class ZIoTAuthenticator {
   /**
    * Utils
    */
+  private checkLabel(label: string) {
+    const res = label.split(':')
+    return res.length == 1 ? ([undefined, res[0]] as const) : ([res[0], res[1]] as const)
+  }
+
   private checkOptions(options: ZAuthOptions) {
     const duration =
       options != undefined && options.duration != undefined

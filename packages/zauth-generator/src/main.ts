@@ -6,7 +6,11 @@ import { ZIoTAuthKeyUri } from './ziotauth-keyuri'
   const authenticator = new ZIoTAuthenticator()
   const uri = authenticator.generateKeyUri(
     'soma-lounge:jwkim@zigbang.com',
-    '1666329317842-98bdd778-f907-4675-9829-b033e8a28bde'
+    '1666329317842-98bdd778-f907-4675-9829-b033e8a28bde',
+    {
+      algorithm: ZHashAlgorithms.HMACSHA1,
+      duration: 60,
+    }
   )
   const keyuri = new ZIoTAuthKeyUri(uri)
   console.log('url=' + keyuri.url)
