@@ -56,8 +56,13 @@ export class ZOtp {
 		return true
 	}
 
-	public verify(uri: KeyUri) {
-		const urlObj = new URL(uri)
+	/**
+	 *
+	 * @param targetUri The target key URI to verify with my hashed code
+	 * @returns true if the verification is successful
+	 */
+	public verify(targetUri: KeyUri): boolean {
+		const urlObj = new URL(targetUri)
 		const value = urlObj.searchParams.get("value") || ""
 		return this.mac == value
 	}
