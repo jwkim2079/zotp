@@ -28,6 +28,9 @@ export enum HashAlgorithms {
 export class ZOtp {
   DEFAULT_PERIOD: number = 30
 
+  private secretKey: SecretKey
+  private algorithm: HashAlgorithms
+  private period: number
   private mac: string
   private uri: KeyUri
 
@@ -37,11 +40,12 @@ export class ZOtp {
    * @param algorithm (Optional) The algorithm used for calculating the HMAC. The default value is HMACSHA1.
    * @param duration: (Optional) Available duration as onepass code (seconds). The default value is 30 secs.
    */
-  constructor(private secretKey: SecretKey, private algorithm?: HashAlgorithms, private period?: number) {
-    if (this.algorithm == undefined) this.algorithm = HashAlgorithms.HMACSHA1
-    if (this.period == undefined) this.period = this.DEFAULT_PERIOD
+  constructor(secretKey: SecretKey, algorithm?: HashAlgorithms, period?: number) {
+    this.algorithm = HashAlgorithms.HMACSHA1
+    this.period = this.DEFAULT_PERIOD
 
-    //this.printProperties()
+    if (algorithm != undefined) this.algorithm = algorithm
+    if (period != undefined) this.period = period
   }
 
   /**
@@ -87,7 +91,7 @@ export class ZOtp {
    *
    * @returns The algorithm
    */
-  public getAlgorithm(): HashAlgorithms {
+  public getAlgorithm(): HashAlgorithms | undefined {
     return this.algorithm
   }
 
@@ -95,7 +99,7 @@ export class ZOtp {
    *
    * @returns The period
    */
-  public getPeriod(): number {
+  public getPeriod(): number | undefined {
     return this.period
   }
 
