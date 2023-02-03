@@ -41,6 +41,7 @@ export class ZOtp {
    * @param duration: (Optional) Available duration as onepass code (seconds). The default value is 30 secs.
    */
   constructor(secretKey: SecretKey, algorithm?: HashAlgorithms, period?: number) {
+    this.secretKey = secretKey
     this.algorithm = HashAlgorithms.HMACSHA1
     this.period = this.DEFAULT_PERIOD
 
@@ -107,6 +108,7 @@ export class ZOtp {
 	 * private
 	 -----------------------------------------------------------------------------------------*/
   private generateHMAC(message: string, secretKey: SecretKey, algorithm: HashAlgorithms): string {
+    if (message == undefined || secretKey == undefined) return 'error'
     return algorithm == HashAlgorithms.HMACSHA1
       ? CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(message, secretKey)).replace('=', '').replace('+', '')
       : CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(message, secretKey)).replace('=', '').replace('+', '')
