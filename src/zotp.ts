@@ -55,7 +55,6 @@ export class ZOtp {
    * @returns true if successful
    */
   public generate(): boolean {
-    //const key = this.generateHMAC(this.secretKey, this.secretKey, this.algorithm)
     this.mac = this.generateHMAC(this.secretKey + this.getTimeSlice(this.period), this.secretKey, this.algorithm)
     return true
   }
@@ -110,8 +109,12 @@ export class ZOtp {
   private generateHMAC(message: string, secretKey: SecretKey, algorithm: HashAlgorithms): string {
     if (message == undefined || secretKey == undefined) return 'error'
     return algorithm == HashAlgorithms.HMACSHA1
-      ? CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(message, secretKey)).replace('=', '').replace('+', '')
-      : CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(message, secretKey)).replace('=', '').replace('+', '')
+      ? CryptoJS.HmacSHA1(message, secretKey).toString()
+      : CryptoJS.HmacSHA256(message, secretKey).toString()
+
+    // return algorithm == HashAlgorithms.HMACSHA1
+    //   ? CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA1(message, secretKey)).replace(/\=/g, '').replace(/\+/g, '')
+    //   : CryptoJS.enc.Base64.stringify(CryptoJS.HmacSHA256(message, secretKey)).replace(/\=/g, '').replace(/\+/g, '')
   }
 
   private getTimeSlice(duration: number): string {
